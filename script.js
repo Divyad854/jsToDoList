@@ -5,36 +5,30 @@ const taskCount = document.getElementById("taskCount");
 const clearButton = document.getElementById("clearButton");
 
 
-// Get tasks from localStorage
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 
-// Display all tasks
 function displayTasks() {
 
     taskList.innerHTML = "";
 
     tasks.forEach(function (task) {
 
-        // Create li
         const li = document.createElement("li");
 
         li.classList.add("task");
 
 
-        // Add completed class
         if (task.completed) {
             li.classList.add("completed");
         }
 
 
-        // Left side
         const taskLeft = document.createElement("div");
 
         taskLeft.classList.add("task-left");
 
 
-        // Checkbox
         const checkbox = document.createElement("input");
 
         checkbox.type = "checkbox";
@@ -44,27 +38,21 @@ function displayTasks() {
         checkbox.dataset.id = task.id;
 
 
-        // Task text
         const span = document.createElement("span");
 
         span.classList.add("task-text");
 
         span.textContent = task.text;
 
-
-        // Add checkbox and text
         taskLeft.appendChild(checkbox);
 
         taskLeft.appendChild(span);
 
 
-        // Buttons container
         const buttons = document.createElement("div");
 
         buttons.classList.add("task-buttons");
 
-
-        // Edit button
         const editButton = document.createElement("button");
 
         editButton.classList.add("edit-button");
@@ -73,8 +61,6 @@ function displayTasks() {
 
         editButton.dataset.id = task.id;
 
-
-        // Delete button
         const deleteButton = document.createElement("button");
 
         deleteButton.classList.add("delete-button");
@@ -84,19 +70,14 @@ function displayTasks() {
         deleteButton.dataset.id = task.id;
 
 
-        // Add buttons
         buttons.appendChild(editButton);
-
         buttons.appendChild(deleteButton);
 
 
-        // Add everything to li
         li.appendChild(taskLeft);
 
         li.appendChild(buttons);
 
-
-        // Add li to list
         taskList.appendChild(li);
 
     });
@@ -105,14 +86,10 @@ function displayTasks() {
     updateTaskCount();
 }
 
-
-// Add new task
 function addTask() {
 
     const text = taskInput.value.trim();
 
-
-    // Don't allow empty task
     if (text === "") {
 
         alert("Please enter a task.");
@@ -120,8 +97,6 @@ function addTask() {
         return;
     }
 
-
-    // Create new task
     const newTask = {
 
         id: Date.now(),
@@ -133,28 +108,20 @@ function addTask() {
     };
 
 
-    // Add task to array
     tasks.push(newTask);
 
 
-    // Save
     saveTasks();
 
 
-    // Display
     displayTasks();
 
 
-    // Clear input
     taskInput.value = "";
 
-
-    // Focus input
     taskInput.focus();
 }
 
-
-// Add button
 addButton.addEventListener("click", function () {
 
     addTask();
@@ -162,7 +129,6 @@ addButton.addEventListener("click", function () {
 });
 
 
-// Press Enter to add
 taskInput.addEventListener("keydown", function (event) {
 
     if (event.key === "Enter") {
@@ -173,14 +139,8 @@ taskInput.addEventListener("keydown", function (event) {
 
 });
 
-
-// Task list click events
 taskList.addEventListener("click", function (event) {
 
-
-    // =========================
-    // COMPLETE TASK
-    // =========================
 
     if (event.target.type === "checkbox") {
 
@@ -208,9 +168,6 @@ taskList.addEventListener("click", function (event) {
     }
 
 
-    // =========================
-    // EDIT TASK
-    // =========================
 
     if (event.target.classList.contains("edit-button")) {
 
@@ -231,14 +188,11 @@ taskList.addEventListener("click", function (event) {
                 task.text
             );
 
-
-            // User didn't press Cancel
             if (newText !== null) {
 
                 const updatedText = newText.trim();
 
 
-                // Don't allow empty task
                 if (updatedText === "") {
 
                     alert("Task cannot be empty.");
@@ -246,16 +200,11 @@ taskList.addEventListener("click", function (event) {
                     return;
                 }
 
-
-                // Update task
                 task.text = updatedText;
 
 
-                // Save changes
                 saveTasks();
 
-
-                // Display changes
                 displayTasks();
 
             }
@@ -264,10 +213,6 @@ taskList.addEventListener("click", function (event) {
 
     }
 
-
-    // =========================
-    // DELETE TASK
-    // =========================
 
     if (event.target.classList.contains("delete-button")) {
 
@@ -290,10 +235,6 @@ taskList.addEventListener("click", function (event) {
 });
 
 
-// =========================
-// CLEAR COMPLETED
-// =========================
-
 clearButton.addEventListener("click", function () {
 
     tasks = tasks.filter(function (task) {
@@ -309,11 +250,6 @@ clearButton.addEventListener("click", function () {
 
 });
 
-
-// =========================
-// SAVE TASKS
-// =========================
-
 function saveTasks() {
 
     localStorage.setItem(
@@ -323,10 +259,6 @@ function saveTasks() {
 
 }
 
-
-// =========================
-// UPDATE TASK COUNT
-// =========================
 
 function updateTaskCount() {
 
@@ -349,6 +281,4 @@ function updateTaskCount() {
 
 }
 
-
-// Display tasks when page loads
 displayTasks();
